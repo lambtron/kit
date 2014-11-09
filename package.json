@@ -17,6 +17,7 @@
     "express": "3.x",
     "underscore": "latest",
     "request": "latest",
-    "mongoose": "latest"
+    "mongoose": "latest",
+    "googleapis": "^1.0.14"
   }
 }
