@@ -15,6 +15,12 @@
       res.send({url: url}, 200);
     });
 
+    app.post('/api/contacts', function(res, req) {
+      var token = '';
+      // Google.getContacts('ya29.uQDtkfD77UaWJTDg777ei0YOrfI_K_qQ1COTyrv_gTRf0FYsLCUHCJnN3FwbOJ35cWVynIbsYTIBhw', function(data) {
+      // });
+    });
+
     // Application routes ======================================================
     app.get('/oauth2callback', function (req, res) {
       // Callback screen.
@@ -26,7 +32,7 @@
           tokens.access_token = tokens.access_token || '';
           tokens.expiry_date = tokens.expiry_date || '';
           User.upsertUser(this, tokens.refresh_token, tokens.access_token,
-            tokens.expiry_date, twilio_number);
+            tokens.expiry_date);
         }
       }.bind(email));
 
