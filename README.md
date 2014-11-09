@@ -1,4 +1,4 @@
-kit
+KIT
 ===
 
-Base touch.
+Let's have our bases touch. Sexually.
