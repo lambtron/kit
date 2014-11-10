@@ -3,10 +3,10 @@ function($routeProvider, $locationProvider) {
   $locationProvider.html5Mode(true);
   $routeProvider.
   when('/', {
-    templateUrl: 'public/views/pages/index.html',
-    controller: 'indexController'
+    templateUrl: 'public/views/pages/start.html',
+    controller: 'startController'
   }).
-  when('/setup', {
+  when('/oauth2callback', {
     templateUrl: 'public/views/pages/setup.html',
     controller: 'setupController'
   }).

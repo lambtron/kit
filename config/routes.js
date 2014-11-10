@@ -3,11 +3,16 @@
 (function() {
   // Import helpers ============================================================
   var Google = require('../app/helpers/google');
+  var User = require('../app/models/user');
 
   // Public functions. =========================================================
-  module.exports = function (app) {
-    // API routes. =============================================================
-    app.post('/api/oauth', function (req, res) {
+  module.exports = function(app) {
+
+    /**
+     * Get url for oauth
+     *
+     */
+    app.post('/api/oauth', function(req, res) {
       var email = req.body.email;
 
       // Pass email to Google to retrieve redirect URL with email as state.
@@ -15,38 +20,63 @@
       res.send({url: url}, 200);
     });
 
-    app.post('/api/contacts', function(res, req) {
-      var token = '';
-      // Google.getContacts('ya29.uQDtkfD77UaWJTDg777ei0YOrfI_K_qQ1COTyrv_gTRf0FYsLCUHCJnN3FwbOJ35cWVynIbsYTIBhw', function(data) {
-      // });
-    });
 
-    // Application routes ======================================================
-    app.get('/oauth2callback', function (req, res) {
-      // Callback screen.
-      var email = req.query.state;
-      Google.setCredentialsFromCode(req.query.code, function(err, tokens) {
+    /**
+     * Save authorized user to database.
+     *
+     */
+    app.post('/api/user', function(req, res) {
+      var email = req.body.email || '';
+      var code = req.body.code || '';
+      if (code.length == 0 || email.length == 0) return;
+      Google.setCredentialsFromCode(code, function(err, tokens) {
+        console.log(tokens);
         // Make sure all parameters exist.
-        if (this.length > 0) {
-          tokens.refresh_token = tokens.refresh_token || '';
-          tokens.access_token = tokens.access_token || '';
-          tokens.expiry_date = tokens.expiry_date || '';
-          User.upsertUser(this, tokens.refresh_token, tokens.access_token,
-            tokens.expiry_date);
-        }
+        tokens.refresh_token = tokens.refresh_token || '';
+        tokens.access_token = tokens.access_token || '';
+        tokens.expiry_date = tokens.expiry_date || '';
+        console.log('upsert user');
+        User.upsertUser(this, tokens.refresh_token, tokens.access_token,
+          tokens.expiry_date);
       }.bind(email));
 
-      // Success!
-      res.sendfile('done.html', {'root': './public/views/'});
+      res.send({success: true},200);
     });
 
-    app.post('/conference', function (req, res) {
-      var name = req.query.name || '';
-      res.set('Content-Type', 'text/xml');
-      res.send(Twilio.getConferenceTwiml(name));
+
+    /**
+     * Retrieve or save a user's contacts.
+     *
+     */
+    app.post('/api/contacts', function(req, res) {
+      var email = req.body.email;
+      var contacts = req.body.contacts;
+
+      if (!email) return;
+      if (contacts) {
+        User.upsertUserContacts(email, contacts);
+        return;
+      }
+
+      // If no contacts, then get user's contacts.
+      User.create.find({email: email}, function(err, users) {
+        // Get users auth tokens.
+        var user = users[0];
+        Google.getContacts(user.google_access_token, function(err, data) {
+          console.log(data);
+          res.send(data, 200);
+        });
+      });
+
+      res.send(200);
     });
 
-    app.get('/*', function (req, res) {
+
+    /**
+     * Catch-all return index.html
+     *
+     */
+    app.get('/*', function(req, res) {
       res.sendfile('index.html', {'root': './public/views/'});
     });
   };
