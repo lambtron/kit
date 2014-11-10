@@ -30,13 +30,11 @@
       var code = req.body.code || '';
       if (code.length == 0 || email.length == 0) return;
       Google.setCredentialsFromCode(code, function(err, tokens) {
-        console.log(tokens);
-        // Make sure all parameters exist.
+        if (err) res.send(err, 500);
         tokens.refresh_token = tokens.refresh_token || '';
         tokens.access_token = tokens.access_token || '';
         tokens.expiry_date = tokens.expiry_date || '';
-        console.log('upsert user');
-        User.upsertUser(this, tokens.refresh_token, tokens.access_token,
+        User.upsertUserToken(this, tokens.refresh_token, tokens.access_token,
           tokens.expiry_date);
       }.bind(email));
 

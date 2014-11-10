@@ -61,7 +61,8 @@ kitt.controller('setupController',
       };
       $http.post('/api/user', load)
         .success(function(err, data) {
-          setup.getContacts();
+          // setup.getContacts();
+          console.log('success');
         })
         .error(function(err, data) {
         });

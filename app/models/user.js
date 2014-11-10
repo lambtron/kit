@@ -20,6 +20,9 @@
   module.exports = {
     create: User,
 
+
+
+
     upsertUserToken: function (email, google_refresh_token, google_access_token, google_expiry) {
       var error = function(err) {
         if (err)
@@ -30,13 +33,15 @@
         $set: {
           google_refresh_token: google_refresh_token,
           google_access_token: google_access_token,
-          google_expiry: google_expiry,
-          twilio_number: twilio_number
+          google_expiry: google_expiry
         }
       },
       {upsert: true},
       error);
     },
+
+
+
 
     upsertUserContacts: function(email, contacts) {
       var error = function(err) {

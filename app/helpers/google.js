@@ -1,9 +1,9 @@
 'use strict';
 
 (function () {
+  var agent = require('superagent');
   var google = require('googleapis');
   var OAuth2Client = google.auth.OAuth2;
-  var agent = require('superagent');
 
   // Client ID and client secret are available at
   // https://code.google.com/apis/console
@@ -36,12 +36,7 @@
      *
      */
     setCredentialsFromCode: function setCredentialsFromCode(code, fn) {
-      oauth2Client.getToken(code, function(err, tokens) {
-        if (!err) {
-          oauth2Client.setCredentials(tokens);
-          fn(null, tokens);
-        }
-      });
+      oauth2Client.getToken(code, fn);
     },
 
 
@@ -54,16 +49,8 @@
      * @param {Function} fn
      */
     refreshAccessToken: function refreshAccessToken(tokens, fn) {
-      // First set tokens.
       oauth2Client.setCredentials(tokens);
-      // Then see if they need to be refreshed.
-      oauth2Client.refreshAccessToken(function(err, tokens) {
-        if (!err) {
-          fn(null, tokens);
-        } else {
-          fn(err, null);
-        };
-      });
+      oauth2Client.refreshAccessToken(fn);
     },
 
 
