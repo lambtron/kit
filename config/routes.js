@@ -30,7 +30,7 @@
       var code = req.body.code || '';
       if (code.length == 0 || email.length == 0) return;
       Google.setCredentialsFromCode(code, function(err, tokens) {
-        if (err) res.send(err, 500);
+        if (err) return;
         tokens.refresh_token = tokens.refresh_token || '';
         tokens.access_token = tokens.access_token || '';
         tokens.expiry_date = tokens.expiry_date || '';
@@ -61,12 +61,12 @@
         // Get users auth tokens.
         var user = users[0];
         Google.getContacts(user.google_access_token, function(err, data) {
-          console.log(data);
-          res.send(data, 200);
+          var contacts = data.text;
+          res.send(contacts, 200);
         });
       });
 
-      res.send(200);
+      // res.send(200);
     });
 
 

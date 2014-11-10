@@ -61,7 +61,7 @@ kitt.controller('setupController',
       };
       $http.post('/api/user', load)
         .success(function(err, data) {
-          // setup.getContacts();
+          setup.getContacts();
           console.log('success');
         })
         .error(function(err, data) {
@@ -97,11 +97,11 @@ kitt.controller('setupController',
     getContacts: function getContacts() {
       if (this.email.length == 0) return;
       $http.post('/api/contacts', {email: 'andyjiang@gmail.com'})
-        .success(function(err, data) {
-          console.log(data);
-          setup.contacts = data.contacts;
+        .success(function(data) {
+          console.log(data.feed.entry);
+          setup.contacts = data.feed.entry;
         })
-        .error(function(err, data) {
+        .error(function(err) {
         });
     },
 
