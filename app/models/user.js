@@ -18,11 +18,17 @@
   var User = mongoose.model("User", UserSchema);
 
   module.exports = {
+    /**
+     * Returns self.
+     *
+     */
     create: User,
 
 
-
-
+    /**
+     * Upsert user with new tokens
+     *
+     */
     upsertUserToken: function (email, google_refresh_token, google_access_token, google_expiry) {
       var error = function(err) {
         if (err)
@@ -41,8 +47,13 @@
     },
 
 
-
-
+    /**
+     * Upsert user with new contacts
+     *
+     * @param {string} email
+     * @param {array} contacts
+     *
+     */
     upsertUserContacts: function(email, contacts) {
       var error = function(err) {
         if (err)
