@@ -11,9 +11,10 @@
   var CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET;
   var REDIRECT_URL = process.env.GOOGLE_REDIRECT_URL;
   var oauth2Client = new OAuth2Client(CLIENT_ID, CLIENT_SECRET, REDIRECT_URL);
-  var contactsEndpoint = 'https://www.google.com/m8/feeds/contacts/default/full?alt=json&oauth_token=';
+  var contactsEndpoint = 'https://www.google.com/m8/feeds/contacts/default/full?updated-min=2007-03-16T00:00:00?alt=json&oauth_token=';
 
   module.exports = {
+
     /**
      * Get URL for Oauth.
      *
@@ -21,6 +22,7 @@
      *
      * @return {Object}
      */
+
     getUrl: function getUrl(email) {
       return oauth2Client.generateAuthUrl({
         access_type: 'offline', // will return a refresh token
@@ -30,15 +32,14 @@
       });
     },
 
-
     /**
      * Set credentials to Google client from access code.
      *
      */
+
     setCredentialsFromCode: function setCredentialsFromCode(code, fn) {
       oauth2Client.getToken(code, fn);
     },
-
 
     /**
      * Refresh access token.
@@ -48,11 +49,11 @@
      *   @property {string} refresh_token
      * @param {Function} fn
      */
+
     refreshAccessToken: function refreshAccessToken(tokens, fn) {
       oauth2Client.setCredentials(tokens);
       oauth2Client.refreshAccessToken(fn);
     },
-
 
     /**
      * Get contacts from Google account.
@@ -61,6 +62,7 @@
      * @param {Function} fn
      *
      */
+
     getContacts: function getContacts(token, fn) {
       agent
         .get(contactsEndpoint + token)

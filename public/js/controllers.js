@@ -14,7 +14,6 @@ kitt.controller('startController',
   var oauth = $scope.oauth = {
     email: '',
 
-
     /**
      * Initiate oauth process.
      *
@@ -23,6 +22,7 @@ kitt.controller('startController',
      * returns data object
      *   url, string
      */
+
     connect: function connect() {
       $http.post('/api/oauth', {email: this.email})
         .success(function(err, data) {
@@ -50,10 +50,11 @@ kitt.controller('setupController',
     email: '',
     code: '',
 
-
     /**
      * Save user and oauth codes in database.
+     *
      */
+
     saveUser: function saveUser() {
       var load = {
         email: this.email,
@@ -68,49 +69,51 @@ kitt.controller('setupController',
         });
     },
 
-
     /**
      * Get email from query string.
      *
      */
+
     setEmail: function setEmail() {
       var qs = $location.search();
       this.email = qs.state || '';
     },
 
-
     /**
      * Get code from query string.
      *
      */
+
     setCode: function setCode() {
       var qs = $location.search();
       this.code = qs.code || '';
     },
-
 
     /**
      * Get contacts from API.
      *
      * @return {array of contacts objects}
      */
+
     getContacts: function getContacts() {
       if (this.email.length == 0) return;
       $http.post('/api/contacts', {email: 'andyjiang@gmail.com'})
         .success(function(data) {
-          console.log(data.feed.entry);
+          console.log(data);
+          // console.log(data.feed.entry);
+          // console.log(data.feed.entry);
           setup.contacts = data.feed.entry;
         })
         .error(function(err) {
         });
     },
 
-
     /**
      * Save contacts to API.
      *
      * array of contacts objects
      */
+
     saveContacts: function saveContacts() {
       if (this.email.length == 0) return;
       $http.post('/api/contacts', {email: this.email, contacts: this.contacts})

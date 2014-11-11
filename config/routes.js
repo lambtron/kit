@@ -12,19 +12,18 @@
      * Get url for oauth
      *
      */
+
     app.post('/api/oauth', function(req, res) {
       var email = req.body.email;
-
-      // Pass email to Google to retrieve redirect URL with email as state.
       var url = Google.getUrl(email);
       res.send({url: url}, 200);
     });
-
 
     /**
      * Save authorized user to database.
      *
      */
+
     app.post('/api/user', function(req, res) {
       var email = req.body.email || '';
       var code = req.body.code || '';
@@ -41,26 +40,24 @@
       res.send({success: true},200);
     });
 
-
     /**
      * Retrieve or save a user's contacts.
      *
      */
+
     app.post('/api/contacts', function(req, res) {
       var email = req.body.email;
       var contacts = req.body.contacts;
-
       if (!email) return;
       if (contacts) {
         User.upsertUserContacts(email, contacts);
         return;
       }
-
-      // If no contacts, then get user's contacts.
       User.create.find({email: email}, function(err, users) {
         // Get users auth tokens.
         var user = users[0];
         Google.getContacts(user.google_access_token, function(err, data) {
+          console.log(data);
           var contacts = data.text;
           res.send(contacts, 200);
         });
@@ -69,11 +66,11 @@
       // res.send(200);
     });
 
-
     /**
      * Catch-all return index.html
      *
      */
+
     app.get('/*', function(req, res) {
       res.sendfile('index.html', {'root': './public/views/'});
     });

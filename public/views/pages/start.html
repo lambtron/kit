@@ -1,52 +1,26 @@
-<div class="row col-lg-12">
-  <div class="jumbotron">
-    <h2>
-      Let's have our bases touch. Sexually.
-    </h2>
-    <hr>
-    <p>
-      Authenticate your Google Account to schedule keep-in-touch reminders with your professional or personal contacts.
-    </p>
+<div class="container" style="width: 700px; padding-top: 140px">
+  <div class="row col-lg-12">
+    <div class="jumbotron">
+      <h2>
+        Let's have our bases touch. Sexually.
+      </h2>
+      <hr>
+      <p>
+        Authenticate your Google Account to schedule keep-in-touch reminders with your professional or personal contacts.
+      </p>
+    </div>
+  </div>
+  <div class="row col-lg-12">
+    <div class="form-group col-lg-7">
+      <input type="text" placeholder="Email address" class="form-control" id="email" required style="margin-left: -15px">
+    </div>
+    <div id="submit" class="btn btn-primary col-lg-5" ng-click="oauth.connect()">
+      Connect your Google Account
+    </div>
+  </div>
+  <div class="row col-lg-12">
+    <div class="alert alert-danger hide" role="alert" id="warning">
+      Uh-oh! This doesn't seem to be a valid email address.
+    </div>
   </div>
 </div>
-<div class="row col-lg-12">
-  <div class="form-group col-lg-7">
-    <input type="text" placeholder="Email address" class="form-control" id="email" required style="margin-left: -15px">
-  </div>
-  <div id="submit" class="btn btn-primary col-lg-5" ng-click="oauth.connect()">
-    Connect your Google Account
-  </div>
-</div>
-<div class="row col-lg-12">
-  <div class="alert alert-danger hide" role="alert" id="warning">
-    Uh-oh! This doesn't seem to be a valid email address.
-  </div>
-</div>
-
-
-<script>
-  $('#submit').on('click', function (e) {
-    var email = $('#email').val();
-    if (window.validateEmail(email)) {
-      if ($('#warning').hasClass('hide'))
-        $('#warning').addClass('hide');
-      $.post("api/oauth", { email: email }, function (data) {
-        window.location.href = data.url;
-      });
-    } else {
-      $('#warning').removeClass('hide');
-    }
-  });
-
-  window.validateEmail = function validateEmail(email) {
-    var atpos = email.indexOf("@");
-    // Create a variable to return the numerical value of .
-    // within the variable
-    var dotpos = email.lastIndexOf(".");
-    // Compare the numerical values
-    if (atpos < 1 || dotpos < atpos + 2 || dotpos + 2 >= email.length) {
-      return false;
-    }
-    return true;
-  }
-</script>
