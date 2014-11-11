@@ -99,10 +99,8 @@ kitt.controller('setupController',
       if (this.email.length == 0) return;
       $http.post('/api/contacts', {email: 'andyjiang@gmail.com'})
         .success(function(data) {
-          console.log(data);
-          // console.log(data.feed.entry);
-          // console.log(data.feed.entry);
-          setup.contacts = data.feed.entry;
+          if (data && data.feed)
+            setup.contacts = data.feed.entry;
         })
         .error(function(err) {
         });

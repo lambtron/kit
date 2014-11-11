@@ -54,10 +54,8 @@
         return;
       }
       User.create.find({email: email}, function(err, users) {
-        // Get users auth tokens.
         var user = users[0];
         Google.getContacts(user.google_access_token, function(err, data) {
-          console.log(data);
           var contacts = data.text;
           res.send(contacts, 200);
         });

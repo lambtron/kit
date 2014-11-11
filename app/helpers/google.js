@@ -11,7 +11,7 @@
   var CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET;
   var REDIRECT_URL = process.env.GOOGLE_REDIRECT_URL;
   var oauth2Client = new OAuth2Client(CLIENT_ID, CLIENT_SECRET, REDIRECT_URL);
-  var contactsEndpoint = 'https://www.google.com/m8/feeds/contacts/default/full?updated-min=2007-03-16T00:00:00?alt=json&oauth_token=';
+  var contactsEndpoint = 'https://www.google.com/m8/feeds/contacts/default/full?alt=json&oauth_token=';
 
   module.exports = {
 

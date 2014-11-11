@@ -5,7 +5,9 @@
     </div>
     <ul>
       <li ng-repeat="contact in setup.contacts track by $index">
-        {{ contact.gd$email[0].address }}
+        <div>
+          {{ contact.gd$email[0].address }}
+        </div>
       </li>
     </ul>
   </div>
