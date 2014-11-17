@@ -119,7 +119,8 @@ kitt.controller('setupController',
       contacts.forEach(function(contact) {
         var newContact = {
           email: contact.gd$email[0].address,
-          frequency: null // in days
+          frequency: null,
+          period: null
         };
         setup.contacts.push(newContact);
       });
@@ -133,11 +134,12 @@ kitt.controller('setupController',
 
     saveContacts: function saveContacts() {
       if (this.email.length == 0) return;
-      $http.post('/api/contacts', {email: this.email, contacts: this.contacts})
-        .success(function(err, data) {
-        })
-        .error(function(err, data) {
-        });
+      console.log(this.contacts);
+      // $http.post('/api/contacts', {email: this.email, contacts: this.contacts})
+      //   .success(function(err, data) {
+      //   })
+      //   .error(function(err, data) {
+      //   });
     }
   };
 
