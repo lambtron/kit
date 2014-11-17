@@ -4,6 +4,7 @@
   // Import helpers ============================================================
   var Google = require('../app/helpers/google');
   var User = require('../app/models/user');
+  var moment = require('moment');
 
   // Public functions. =========================================================
   module.exports = function(app) {
@@ -89,6 +90,7 @@
       access_token: user.google_access_token,
       refresh_token: user.google_refresh_token
     };
+    if (moment().isBefore(user.google_expiry)) return fn(null, load);
     Google.refreshAccessToken(load, function(err, tokens) {
       User.upsertUserToken(this, tokens.refresh_token,
         tokens.access_token, tokens.expiry_date);
