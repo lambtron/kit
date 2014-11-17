@@ -7,8 +7,8 @@
  *
  */
 kitt.controller('startController',
-  ['$scope', '$http', '$routeParams', '$location',
-  function ($scope, $http, $routeParams, $location)
+  ['$scope', '$http', '$routeParams', '$location', '$window',
+  function ($scope, $http, $routeParams, $location, $window)
 {
   // Save email, get URL
   var oauth = $scope.oauth = {
@@ -25,8 +25,8 @@ kitt.controller('startController',
 
     connect: function connect() {
       $http.post('/api/oauth', {email: this.email})
-        .success(function(err, data) {
-          $location.path(data.url);
+        .success(function(data) {
+          $window.location.href = data.url;
         })
         .error(function(err, data) {
         });
@@ -49,6 +49,9 @@ kitt.controller('setupController',
     contacts: [],
     email: '',
     code: '',
+    frequencies: [0,1,2,3,4,5,6],
+    periods: ['week','month'],
+
 
     /**
      * Save user and oauth codes in database.
@@ -97,13 +100,29 @@ kitt.controller('setupController',
 
     getContacts: function getContacts() {
       if (this.email.length == 0) return;
-      $http.post('/api/contacts', {email: 'andyjiang@gmail.com'})
+      $http.post('/api/contacts', {email: this.email})
         .success(function(data) {
           if (data && data.feed)
-            setup.contacts = data.feed.entry;
+            setup.addContacts(data.feed.entry);
         })
         .error(function(err) {
         });
+    },
+
+    /**
+     * Add contacts to this.contacts.
+     *
+     * @param {array} contacts
+     */
+
+    addContacts: function addContacts(contacts) {
+      contacts.forEach(function(contact) {
+        var newContact = {
+          email: contact.gd$email[0].address,
+          frequency: null // in days
+        };
+        setup.contacts.push(newContact);
+      });
     },
 
     /**

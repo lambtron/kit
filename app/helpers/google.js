@@ -58,7 +58,9 @@
     /**
      * Get contacts from Google account.
      *
-     * @param {String} token
+     * @param {Object} tokens
+     *   @property {string} access_token
+     *   @property {string} refresh_token
      * @param {Function} fn
      *
      */

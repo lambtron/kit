@@ -55,9 +55,12 @@
       }
       User.create.find({email: email}, function(err, users) {
         var user = users[0];
-        Google.getContacts(user.google_access_token, function(err, data) {
-          var contacts = data.text;
-          res.send(contacts, 200);
+        refreshTokens(user, function(err, data) {
+          if (err || !data.access_token) return;
+          Google.getContacts(data.access_token, function(err, data) {
+            var contacts = data.text;
+            res.send(contacts, 200);
+          });
         });
       });
 
@@ -73,4 +76,24 @@
       res.sendfile('index.html', {'root': './public/views/'});
     });
   };
+
+  /**
+   * Refresh Google tokens given user tokens.
+   *
+   * @param {Object} tokens
+   * @param {Function} fn
+   *
+   */
+  function refreshTokens(user, fn) {
+    var load = {
+      access_token: user.google_access_token,
+      refresh_token: user.google_refresh_token
+    };
+    Google.refreshAccessToken(load, function(err, tokens) {
+      User.upsertUserToken(this, tokens.refresh_token,
+        tokens.access_token, tokens.expiry_date);
+      fn(err, tokens);
+    }.bind(user.email));
+  }
+
 }());

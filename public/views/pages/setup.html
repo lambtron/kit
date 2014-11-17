@@ -6,9 +6,17 @@
     <ul>
       <li ng-repeat="contact in setup.contacts track by $index">
         <div>
-          {{ contact.gd$email[0].address }}
+          {{ contact.email }}
+        </div>
+        <div>
+          <select ng-model="setup.frequencies"></select>
+          <select ng-model="setup.periods"></select>
+          <!-- 0 - 9, days, weeks, months -->
         </div>
       </li>
     </ul>
+    <div ng-click="setup.saveContacts()" class="btn btn-primary">
+      Save
+    </div>
   </div>
 </div>

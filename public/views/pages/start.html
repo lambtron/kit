@@ -12,7 +12,7 @@
   </div>
   <div class="row col-lg-12">
     <div class="form-group col-lg-7">
-      <input type="text" placeholder="Email address" class="form-control" id="email" required style="margin-left: -15px">
+      <input type="text" placeholder="Email address" class="form-control" ng-model="oauth.email" required style="margin-left: -15px">
     </div>
     <div id="submit" class="btn btn-primary col-lg-5" ng-click="oauth.connect()">
       Connect your Google Account
